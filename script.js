@@ -12,6 +12,14 @@ window.onload = function () {
   cardX = ((canvas.width - cardWidth) / 2);
   cardY = 50;
 
+  /*todo: 
+  figure out why not visually sliding
+  add text to card interior
+  get interior to appear onclick of front,
+    then front interior click to stop working
+  ditto back for onclick interior
+  */
+
 
   function drawCardFront() {
 
@@ -20,37 +28,6 @@ window.onload = function () {
     };
   };
   drawCardFront();
-
-  function drawCardBack() {
-
-    cardBack.onload = function () {
-      ctx.drawImage(cardBack, cardX, cardY, cardWidth, cardHeight);
-    };
-  };
-  //remember to call onclick of card interior right
-
-
-  function openCard() {
-    canvas.addEventListener("click", function (ev) {
-      if (ev.clientX > cardX
-        && ev.clientX < (cardX + cardWidth)  //this doesn't work for some reason
-        && ev.clientY > 50 && ev.clientY < 600) {
-        console.log("clicked");
-        window.requestAnimationFrame(slideRight, 200);
-      };
-
-    }, false);
-
-  };
-
-  openCard();
-
-  function slideRight() {
-    ctx.clearRect(0, 0, 700, 450);
-    drawCardFront(); //cardX is incrementing, but not redrawing in correct place
-    cardX += 50;
-    console.log(cardX, cardY);
-  };
 
 
   function drawInterior() {
@@ -63,5 +40,58 @@ window.onload = function () {
 
     //add text
   };
-  drawInterior();
+
+
+  function drawCardBack() {
+
+    cardBack.onload = function () {
+      ctx.drawImage(cardBack, cardX, cardY, cardWidth, cardHeight);
+    };
+  };
+  //remember to call onclick of card interior right
+
+
+
+  canvas.addEventListener("click", function (ev) {
+
+    //make this work when front or back showing, but not interior    
+    function openCard() {
+      if (ev.clientX > cardX
+        && ev.clientX < (cardX + cardWidth)  //this doesn't work precisely for some reason
+        && ev.clientY > 50 && ev.clientY < 600) {
+        console.log("clicked");
+        drawInterior();
+        // window.requestAnimationFrame(slideRight, 200);
+      };
+    };
+    openCard();
+
+    /*    
+        function toFront() {
+          if (within left of interior) {
+            ctx.clearRect(0, 0, 900, 700);
+            drawCardFront();
+          };
+        };
+    
+        function toBack() {
+          if (within right of interior) {
+            ctx.clearRect(0, 0, 900, 700);
+            drawCardBack();
+          };
+        };
+        */
+
+  }, false);
+
+  /* this is not working
+
+  function slideRight() {
+    // ctx.clearRect(0, 0, 700, 450);
+    drawCardFront(); //cardX is incrementing, but not redrawing in correct place
+    cardX += 50;
+    console.log(cardX, cardY);
+  };
+  */
+
 };
