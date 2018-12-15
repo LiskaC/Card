@@ -15,7 +15,7 @@ window.onload = function () {
   cardBackInsideX = (canvas.width / 2);
 
   card = {
-    open: "0"
+    open: null
   }
   /*todo: 
   figure out why not visually sliding
@@ -32,8 +32,12 @@ window.onload = function () {
     card.open = "0";
     console.log(card.open);
   };
-  drawCardFront();
-
+  //drawCardFront();
+  if (card.open === null) {
+    cardFront.onload = function () {
+      drawCardFront();
+    };
+  }
 
   function drawInterior() {
 
@@ -66,9 +70,8 @@ window.onload = function () {
   };
   //remember to call onclick of card interior right
   function openCard(ev) {
-    if (ev.clientX > cardFrontX
-      && ev.clientX < (cardFrontX + cardWidth)  //this doesn't work precisely for some reason
-      && ev.clientY > 50 && ev.clientY < 600) {
+    if (ev.offsetX > cardFrontX
+      && ev.offsetX < (cardFrontX + cardWidth) && ev.offsetY > 50 && ev.offsetY < 600) {
       console.log("clicked");
       drawInterior();
       // window.requestAnimationFrame(slideRight, 200);
@@ -76,11 +79,8 @@ window.onload = function () {
   };
 
   function flipToFront(ev) {
-    if (ev.clientX > cardFrontInsideX
-      && ev.clientX < (cardFrontInsideX + cardWidth)  //this doesn't work precisely for some reason
-      && ev.clientY > 50 && ev.clientY < 600) {
-      console.log("frontInside Clicked");
-      console.log(card.open);
+    if (ev.offsetX > cardFrontInsideX
+      && ev.offsetX <= cardBackInsideX && ev.offsetY > 50 && ev.offsetY < 600) {
       drawCardFront();
     };
   };
@@ -94,7 +94,6 @@ window.onload = function () {
       openCard(ev);
     } else if (card.open == 1) {
       flipToFront(ev);
-      ctx.drawImage(cardFront, cardFrontX, cardY, cardWidth, cardHeight);
     };
 
     /*   function toBack() {
@@ -116,5 +115,4 @@ window.onload = function () {
   );
   };
   */
-
 };
