@@ -19,9 +19,8 @@ window.onload = function () {
   }
   /*todo: 
   figure out why not visually sliding
-  get interior to appear onclick of front,
-    then front interior click to stop working
-  ditto back for onclick interior
+  add messages
+  add photo?
   */
 
   //Section: drawing sides
@@ -46,8 +45,8 @@ window.onload = function () {
     ctx.clearRect(0, 0, 1000, 700);
     ctx.rect(((canvas.width / 2) - cardWidth), cardY, cardWidth, cardHeight);
     ctx.rect((canvas.width / 2), cardY, cardWidth, cardHeight);
-    ctx.strokeStyle = "#CCD";
-    ctx.fillStyle = "#FFE";
+    ctx.strokeStyle = "#CC9";
+    ctx.fillStyle = "#FFD";
     ctx.fill();
     ctx.stroke();
     card.open = 1;
@@ -77,7 +76,7 @@ window.onload = function () {
 
   function openCard(ev) {
     if (ev.offsetX > cardFrontX
-      && ev.offsetX < (cardFrontX + cardWidth) && ev.offsetY > 50 && ev.offsetY < 600) {
+      && ev.offsetX < (cardFrontX + cardWidth) && ev.offsetY > 50 && ev.offsetY < 650) {
       console.log("clicked");
       drawInterior();
       // window.requestAnimationFrame(slideRight, 200);
@@ -86,14 +85,14 @@ window.onload = function () {
 
   function flipToFront(ev) {
     if (ev.offsetX > cardFrontInsideX
-      && ev.offsetX <= cardBackInsideX && ev.offsetY > 50 && ev.offsetY < 600) {
+      && ev.offsetX <= cardBackInsideX && ev.offsetY > 50 && ev.offsetY < 650) {
       drawCardFront();
     };
   };
 
   function flipToBack(ev) {
     if (ev.offsetX > cardBackInsideX
-      && ev.offsetX <= (cardBackInsideX + cardWidth) && ev.offsetY > 50 && ev.offsetY < 600) {
+      && ev.offsetX <= (cardBackInsideX + cardWidth) && ev.offsetY > 50 && ev.offsetY < 650) {
       drawCardBack();
     };
   };
@@ -110,14 +109,6 @@ window.onload = function () {
     } else if (card.open == 2) {
       openCard(ev);
     };
-
-    /*   function toBack() {
-         if (within right of interior) {
-       ctx.clearRect(0, 0, 900, 700);
-       drawCardBack();
-     };
-   };*/
-
   });
 
   /* this is not working
