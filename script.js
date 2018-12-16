@@ -8,11 +8,11 @@ window.onload = function () {
   cardBack.src = "#"; //remember to upload
 
   cardHeight = 600;
-  cardWidth = cardHeight * (1921 / 2704) /* w/h module*/;
+  cardWidth = cardHeight * (1921 / 2704) /* w/h ratio*/;
   cardFrontX = ((canvas.width - cardWidth) / 2);
   cardY = 50;
   cardFrontInsideX = ((canvas.width / 2) - cardWidth);
-  cardBackInsideX = (canvas.width / 2);
+  cardBackInsideX = (canvas.width / 2); //page 3 of the card
 
   card = {
     open: null
@@ -24,20 +24,22 @@ window.onload = function () {
   ditto back for onclick interior
   */
 
+  //Section: drawing sides
 
   function drawCardFront() {
 
     ctx.clearRect(0, 0, 1000, 700);
     ctx.drawImage(cardFront, cardFrontX, cardY, cardWidth, cardHeight);
-    card.open = "0";
+    card.open = 0;
     console.log(card.open);
   };
-  //drawCardFront();
+
   if (card.open === null) {
     cardFront.onload = function () {
       drawCardFront();
     };
   }
+
 
   function drawInterior() {
 
@@ -48,7 +50,7 @@ window.onload = function () {
     ctx.fillStyle = "#FFE";
     ctx.fill();
     ctx.stroke();
-    card.open = "1";
+    card.open = 1;
 
     function drawText() {
       ctx.font = "12px serif";
@@ -66,9 +68,13 @@ window.onload = function () {
     cardBack.onload = function () {
       ctx.drawImage(cardBack, cardFrontX, cardY, cardWidth, cardHeight);
     };
-    card.open = "2";
+    card.open = 2;
   };
-  //remember to call onclick of card interior right
+
+
+
+  //Section: Flipping between sides 
+
   function openCard(ev) {
     if (ev.offsetX > cardFrontX
       && ev.offsetX < (cardFrontX + cardWidth) && ev.offsetY > 50 && ev.offsetY < 600) {
@@ -85,15 +91,24 @@ window.onload = function () {
     };
   };
 
+  function flipToBack(ev) {
+    if (ev.offsetX > cardBackInsideX
+      && ev.offsetX <= (cardBackInsideX + cardWidth) && ev.offsetY > 50 && ev.offsetY < 600) {
+      drawCardBack();
+    };
+  };
+
+
+
   canvas.addEventListener("click", (ev) => {
-
-    //make this work when front or back showing, but not interior    
-
 
     if (card.open == 0) {
       openCard(ev);
     } else if (card.open == 1) {
       flipToFront(ev);
+      flipToBack(ev);
+    } else if (card.open == 2) {
+      openCard(ev);
     };
 
     /*   function toBack() {
