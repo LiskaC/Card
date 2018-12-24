@@ -6,11 +6,13 @@ window.onload = function () {
   cardFront.src = 'images/Takahashi Shotei.png';
   var cardBack = new Image();
   cardBack.src = 'images/Takahashi Shotei back.png';
+  var message = new Image();
+  message.src = 'images/innertext.png';
 
-  cardHeight = 600;
+  cardHeight = 700;
   cardWidth = cardHeight * (1921 / 2704) /* w/h ratio*/;
   cardFrontX = ((canvas.width - cardWidth) / 2);
-  cardY = 50;
+  cardY = 25;
   cardFrontInsideX = ((canvas.width / 2) - cardWidth);
   cardBackInsideX = (canvas.width / 2); //page 3 of the card
 
@@ -28,7 +30,7 @@ window.onload = function () {
 
   function drawCardFront() {
 
-    ctx.clearRect(0, 0, 1000, 700);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(cardFront, cardFrontX, cardY, cardWidth, cardHeight);
     card.open = 0;
   };
@@ -42,7 +44,7 @@ window.onload = function () {
 
   function drawInterior() {
 
-    ctx.clearRect(0, 0, 1000, 700);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.rect(((canvas.width / 2) - cardWidth), cardY, cardWidth, cardHeight);
     ctx.rect((canvas.width / 2), cardY, cardWidth, cardHeight);
     ctx.strokeStyle = "#CCB";
@@ -52,10 +54,12 @@ window.onload = function () {
     card.open = 1;
 
     function drawText() {
-      ctx.font = "12px Verdana";
-      ctx.fillStyle = '#000'
-      ctx.fillText("This be the card", 550, 100);
-      //add text
+      ctx.clearRect((canvas.width / 2 + 50), 50, 400, 650);
+      ctx.drawImage(message, (canvas.width / 2 + 50), 50, 400, 650);
+      // ctx.font = "12px Verdana";
+      // ctx.fillStyle = '#000'
+      // ctx.fillText(message, 550, 100);
+      //add text - can't get it to format when requesting message text by id and rendering in canvas
     };
     drawText();
   };
@@ -63,7 +67,7 @@ window.onload = function () {
 
   function drawCardBack() {
 
-    ctx.clearRect(0, 0, 1000, 700);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(cardBack, cardFrontX, cardY, cardWidth, cardHeight);
     card.open = 2;
   };
@@ -74,7 +78,7 @@ window.onload = function () {
 
   function openCard(ev) {
     if (ev.offsetX > cardFrontX
-      && ev.offsetX < (cardFrontX + cardWidth) && ev.offsetY > 50 && ev.offsetY < 650) {
+      && ev.offsetX < (cardFrontX + cardWidth) && ev.offsetY > cardY && ev.offsetY < (cardY + cardHeight)) {
       console.log("clicked");
       drawInterior();
       // window.requestAnimationFrame(slideRight, 200);
@@ -83,14 +87,14 @@ window.onload = function () {
 
   function flipToFront(ev) {
     if (ev.offsetX > cardFrontInsideX
-      && ev.offsetX <= cardBackInsideX && ev.offsetY > 50 && ev.offsetY < 650) {
+      && ev.offsetX <= cardBackInsideX && ev.offsetY > cardY && ev.offsetY < (cardY + cardHeight)) {
       drawCardFront();
     };
   };
 
   function flipToBack(ev) {
     if (ev.offsetX > cardBackInsideX
-      && ev.offsetX <= (cardBackInsideX + cardWidth) && ev.offsetY > 50 && ev.offsetY < 650) {
+      && ev.offsetX <= (cardBackInsideX + cardWidth) && ev.offsetY > cardY && ev.offsetY < (cardY + cardHeight)) {
       drawCardBack();
     };
   };
